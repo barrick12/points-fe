@@ -1,0 +1,61 @@
+/*
+teal #01949A
+navy #004369
+red #DB1F48
+sanddollar #E5DDC8
+*/
+
+.textField {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.textField input {
+ border: 2px solid #01949A;
+ border-radius: 10px;
+ font-size: inherit;
+ padding: 0.5rem;
+ height: 2.75rem;
+ box-sizing: border-box;
+}
+
+.textField input:focus, .textField input:hover {
+  outline: #03c3ca solid 3px;
+  border: 2px solid #03c3ca;
+}
+
+.textField label {
+  height: 1.5rem;
+  font-weight: 700;
+}
+
+.textField input:focus.error, .textField input:hover.error, .textField input.error {
+  border: 2px solid #DB1F48;
+  outline: #DB1F48 solid 3px;
+}
+
+.textField .required {
+  color: #DB1F48;
+  font-weight: 700;
+}
+
+.textField .helperErrorText {
+  margin: 0.5rem;
+  margin-left: 0;
+  color: #DB1F48;
+  font-size: 0.75rem;
+  font-weight: 700;  
+}
+.textField .helperText {
+  margin: 0.5rem;
+  margin-left: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.textField.disabled > *, .textField.disabled > *:hover {
+  color: grey;
+  border-color: grey;    
+  outline:none;
+}

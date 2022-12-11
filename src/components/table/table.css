@@ -1,0 +1,32 @@
+/*
+teal #01949A
+navy #004369
+red #DB1F48
+sanddollar #E5DDC8
+*/
+
+
+.table {
+  /* border: 1px solid black */
+  border-spacing: 0;
+  font-weight: 700;  
+  border-collapse: collapse;
+}
+
+.table tr{ 
+  border: none;  
+}
+
+.table th {
+  /* font-weight: 700; */
+  color: #004369;
+  background-color: #CFE0EA;
+}
+
+.table th, td {
+  border: 1px solid #01949A;
+  text-align: left;  
+  color: black;
+  padding: 0.75rem 1rem;
+  /* border: 1px solid black */
+}

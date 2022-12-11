@@ -1,8 +1,23 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  width: 100%;
+  height: 100vh;
+  /**/  
 }
 
-.App-logo {
+.App .fieldContainer {
+  display: flex;  
+  /* justify-content: space-between; */
+}
+
+.App .fieldContainer > * {
+  margin-left: 1rem;
+}
+
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -35,4 +50,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
