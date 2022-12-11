@@ -1,4 +1,5 @@
 import { getMockTaxData, TTaxDataYear, TTaxBracket } from "./api/marginal-tax";
+import { getTotalTaxPayable } from './utils/get-total-tax'
 import { TTableRowData } from './components/table';
 
 export const fetchTaxData = async (year: TTaxDataYear, salary: number) => {
@@ -36,10 +37,6 @@ const getTaxPayable = (amountTaxable: number, rate: number): number => {
   return Math.round(amountTaxable * rate * 100) / 100;
 }
 
-export const getEffectiveTaxRate = (rows: TTableRowData[], salary: number) => {
-  let totalAmountPayable = 0;
-  for(const row of rows) {
-    totalAmountPayable += row.taxPayable;
-  }
-  return totalAmountPayable / salary * 100;
+export const getEffectiveTaxRate = (rows: TTableRowData[], salary: number) => {  
+  return getTotalTaxPayable(rows) / salary * 100;
 }

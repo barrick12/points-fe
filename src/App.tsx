@@ -67,14 +67,14 @@ function App() {
   return (
     <div className="App">
       <h1>
-        Marginal Tax Calculator
         <img
           src={calculatorAppIcon}
           alt="calculator"
           width="32px"
           height="32px"
-          style={{ marginBottom: "-0.25rem" }}
+          style={{ marginBottom: "-0.25rem", marginRight: "0.5rem" }}
         />
+        Marginal Tax Calculator
       </h1>
       <div className="fieldContainer">
         <TextField
