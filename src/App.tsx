@@ -1,19 +1,50 @@
 import React, { useEffect, useState, MouseEvent } from "react";
 import "./App.css";
 import { TextField, TTextFieldStatus } from "./components/text-field";
-import { Table } from "./components/table";
+import { Table, TTableRowData } from "./components/table";
 import { Button } from "./components/button";
+import { fetchTaxData, getEffectiveTaxRate } from "./App-helper";
+import { TTaxDataYear } from "./api";
+import calculatorAppIcon from "./assets/calculator-app-icon.png";
 
 function App() {
   const [salary, setSalary] = useState("");
   const [year, setYear] = useState("");
   const [salaryStatus, setSalaryStatus] = useState<TTextFieldStatus>("ok");
   const [yearStatus, setYearStatus] = useState<TTextFieldStatus>("ok");
+  //
+  const [isLoading, setIsLoading] = useState(false);
+  const [rows, setRows] = useState<TTableRowData[]>([]);
+  const [effectiveTaxRate, setEffectiveTaxRate] = useState(0);
 
-  const onButtonClick = (e: MouseEvent) => {
-    console.log("hello");
+  // derived values -- could be memoized if they were expensive
+  const isYearValid =
+    parseInt(year) > 2018 &&
+    parseInt(year) < 2022 &&
+    /^[1-9][0-9]*$/g.test(year);
+  const isButtonDisabled =
+    salary && salaryStatus === "ok" && year && !isLoading && isYearValid
+      ? false
+      : true;
+
+  const onClickSubmit = (e: MouseEvent) => {
+    setIsLoading(true);
   };
 
+  useEffect(() => {
+    // get data and generate table rows
+    if (isLoading && year && salary)
+      (async () => {
+        const rows = await fetchTaxData(
+          parseInt(year) as TTaxDataYear,
+          parseInt(salary)
+        );
+        setRows(rows);
+        setEffectiveTaxRate(getEffectiveTaxRate(rows, parseInt(salary)));
+        setIsLoading(false);
+      })();
+    //
+  }, [isLoading]);
   // validate salary
   useEffect(() => {
     if (!salary) setSalaryStatus("ok");
@@ -21,16 +52,13 @@ function App() {
       setSalaryStatus(/^[1-9][0-9]*$/g.test(salary) ? "ok" : "error");
     }
   }, [salary]);
-
   // validate year
   useEffect(() => {
     if (!year) setYearStatus("ok");
     else {
-      // debounce checks to be not be an annoyance
+      // debounce checks to be not a nuissance when typing
       const timerId = setTimeout(() => {
-        setYearStatus(
-          parseInt(year) > 1900 && /^[1-9][0-9]*$/g.test(year) ? "ok" : "error"
-        );
+        setYearStatus(isYearValid ? "ok" : "error");
       }, 1000);
       return () => clearTimeout(timerId);
     }
@@ -38,6 +66,16 @@ function App() {
 
   return (
     <div className="App">
+      <h1>
+        Marginal Tax Calculator
+        <img
+          src={calculatorAppIcon}
+          alt="calculator"
+          width="32px"
+          height="32px"
+          style={{ marginBottom: "-0.25rem" }}
+        />
+      </h1>
       <div className="fieldContainer">
         <TextField
           id="salary-field"
@@ -50,7 +88,7 @@ function App() {
           required
           helperErrorText="Invalid Number"
           helperText="Enter a number"
-          disabled
+          disabled={isLoading}
         />
         <TextField
           id="year-field"
@@ -62,30 +100,25 @@ function App() {
           label="Tax Year"
           required
           helperErrorText="Invalid Year"
-          helperText="Enter a year"
+          helperText="Enter a year (2019-2021)"
+          disabled={isLoading}
         />
-        <Button id="submit-btn" onClick={onButtonClick}>
-          Submit
-        </Button>
+        <div style={{ marginBottom: "0.5rem" }}>
+          <Button
+            id="submit-btn"
+            onClick={onClickSubmit}
+            disabled={isButtonDisabled}
+          >
+            Submit
+          </Button>
+        </div>
       </div>
-      <br />
-      <Table
-        id="myTable"
-        rows={[
-          {
-            bracket: [10000, 20000],
-            marginalRate: 10,
-            amountTaxable: 10000,
-            taxPayable: 1000,
-          },
-          {
-            bracket: [20001, 30000],
-            marginalRate: 20,
-            amountTaxable: 10000,
-            taxPayable: 2000,
-          },
-        ]}
-      />
+      <Table id="myTable" rows={rows} isLoading={isLoading} />
+      {rows.length > 0 && !isLoading && (
+        <div className="effectiveTaxRate">
+          Effective Tax Rate: {effectiveTaxRate.toFixed(2)}%
+        </div>
+      )}
     </div>
   );
 }

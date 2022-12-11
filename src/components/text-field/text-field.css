@@ -20,7 +20,7 @@ sanddollar #E5DDC8
  box-sizing: border-box;
 }
 
-.textField input:focus, .textField input:hover {
+.textField input:focus {
   outline: #03c3ca solid 3px;
   border: 2px solid #03c3ca;
 }
@@ -30,7 +30,7 @@ sanddollar #E5DDC8
   font-weight: 700;
 }
 
-.textField input:focus.error, .textField input:hover.error, .textField input.error {
+.textField input:focus.error, .textField input.error {
   border: 2px solid #DB1F48;
   outline: #DB1F48 solid 3px;
 }

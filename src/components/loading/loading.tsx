@@ -1,6 +1,5 @@
 import React from "react";
 import BeatLoader from "react-spinners/BeatLoader";
-import "./loading.css";
 import { useCreateTestId } from "../../utils/use-create-test-id";
 
 export interface ILoading {
@@ -12,7 +11,7 @@ export const Loading = (props: ILoading): JSX.Element => {
   const testRef = useCreateTestId(testId);
 
   return (
-    <div className="loading" ref={testRef}>
+    <div ref={testRef}>
       <BeatLoader color="#03c3ca" />
     </div>
   );

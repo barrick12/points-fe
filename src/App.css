@@ -2,52 +2,31 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
+  align-items: flex-start;
   width: 100%;
-  height: 100vh;
-  /**/  
+}
+
+.App > * {
+  margin: 0 2rem 3rem 2rem;
 }
 
 .App .fieldContainer {
-  display: flex;  
-  /* justify-content: space-between; */
+  display: flex;    
+  align-items: center;  
 }
 
 .App .fieldContainer > * {
   margin-left: 1rem;
 }
-
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App .fieldContainer > *:first-child {
+  margin-left: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App .effectiveTaxRate {
+  height: 1.5rem;
+  font-weight: 700; 
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.App h1 {
+  margin: 3rem 2rem 3rem 2rem;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */

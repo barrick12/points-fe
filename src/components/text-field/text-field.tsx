@@ -48,6 +48,8 @@ export const TextField = (props: ITextField) => {
         onInput={onChange}
         required={required}
         disabled={disabled}
+        autoComplete={"off"}
+        autoCorrect={"off"}
       />
       {status === "error" ? (
         <div className="helperErrorText">{helperErrorText}</div>

@@ -8,18 +8,12 @@
   font-size: 1rem;
   height: 2.75rem;
   box-sizing: border-box;
-  outline: none;
+  outline: none;  
 }
 
-.button:hover, .button:focus {  
+.button:focus {  
   outline: #03c3ca solid 3px;
   border: 2px solid #03c3ca;
-}
-
-.button.disabled {
-  color: grey;
-  background-color: #eeeaea;
-  border: 2px solid grey;
 }
 
 .button.disabled:focus, .button.disabled:hover {
@@ -28,4 +22,12 @@
 
 .button:active {
   background-color: #a2d3ef;
+  outline: #03c3ca solid 3px;
+  border: 2px solid #03c3ca;
+}
+
+.button.disabled {
+  color: grey;
+  background-color: #eeeaea;
+  border: 2px solid grey;
 }
