@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { useCreateTestId } from "../../utils/use-create-test-id";
 import "./text-field.css";
 
 export type TTextFieldStatus = "error" | "ok";
@@ -14,6 +15,7 @@ export interface ITextField {
   helperErrorText?: string;
   helperText?: string;
   disabled?: boolean;
+  testId?: string;
 }
 
 export const TextField = (props: ITextField) => {
@@ -27,7 +29,9 @@ export const TextField = (props: ITextField) => {
     helperErrorText,
     helperText,
     disabled = false,
+    testId,
   } = props;
+  const testRef = useCreateTestId(testId);
   return (
     <div className={classNames("textField", { disabled })}>
       <label htmlFor={id}>
@@ -50,6 +54,7 @@ export const TextField = (props: ITextField) => {
         disabled={disabled}
         autoComplete={"off"}
         autoCorrect={"off"}
+        ref={testRef}
       />
       {status === "error" ? (
         <div className="helperErrorText">{helperErrorText}</div>

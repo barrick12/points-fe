@@ -1,11 +1,12 @@
 import React from "react";
 import "./table.css";
-import { Loading } from "../loading/loading";
+import { Loading } from "../loading";
 import { formatNumberToString } from "../../utils/format-number";
 import {
   getTotalAmountPayable,
   getTotalTaxPayable,
 } from "../../utils/get-total-tax";
+import { useCreateTestId } from "../../utils/use-create-test-id";
 
 export type TTableRowData = {
   bracket: number[];
@@ -18,15 +19,16 @@ export interface ITable {
   id: string;
   rows: TTableRowData[];
   isLoading: boolean;
+  testId?: string;
 }
 
 export const Table = (props: ITable) => {
-  const { id, rows, isLoading } = props;
-
+  const { id, rows, isLoading, testId } = props;
+  const testRef = useCreateTestId(testId);
   const loadingTableRow = () => (
     <tr>
       <td colSpan={4} style={{ textAlign: "center", padding: "2rem 0 2rem 0" }}>
-        <Loading />
+        <Loading testId={`${testId}-loading`} />
       </td>
     </tr>
   );
@@ -39,7 +41,7 @@ export const Table = (props: ITable) => {
   );
 
   return (
-    <table id={id} className={"table"}>
+    <table id={id} className={"table"} ref={testRef}>
       <tr>
         <th>Tax Bracket</th>
         <th>Marginal Tax Rate</th>

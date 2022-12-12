@@ -30,18 +30,17 @@ export const getTaxData = async (year: TTaxDataYear) => {
     }
     retries = 0;
     return brackets;
-  } catch(error) {
-    console.log('retying: ', retries);
+  } catch(error) {    
     if(retries < MAX_RETRIES) {      
       retries++;
       const delayRetry = new Promise<void>((res)=>{
         setTimeout(()=> res() , Math.pow(2, retries) + Math.random() * 1000);
       })
       await delayRetry;
-      return await getTaxData(year);      
+      return await getTaxData(year);
     }
     else {
-      // swallow error and show 'oops' message in ui
+      // swallow error and show 'oops' message in ui when array is empty
       return [];
     }
   }
