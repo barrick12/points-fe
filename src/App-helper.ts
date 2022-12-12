@@ -3,10 +3,11 @@ import { getTotalTaxPayable } from './utils/get-total-tax'
 import { TTableRowData } from './components/table';
 
 export const fetchTaxData = async (year: TTaxDataYear, salary: number) => {
- 
-  const res = await getTaxData(year);
-    return getTableRows(res ?? [], salary);
   
+  const res = await getTaxData(year) as TTaxBracket[]; 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return getTableRows(res, salary);
 }
 
 export const getTableRows = (brackets: TTaxBracket[], salary: number ) => {

@@ -37,21 +37,21 @@ function App() {
     if (isLoading && year && salary) {
       if (isError) setIsError(false);
       (async () => {
-        try {
-          const rows = await fetchTaxData(
-            parseInt(year) as TTaxDataYear,
-            parseInt(salary)
-          );
+        const rows = await fetchTaxData(
+          parseInt(year) as TTaxDataYear,
+          parseInt(salary)
+        );
+        if (rows.length === 0) {
+          setIsError(true);
+        } else {
           setRows(rows);
           setEffectiveTaxRate(getEffectiveTaxRate(rows, parseInt(salary)));
-        } catch (error) {
-          setIsError(true);
-        } finally {
-          setIsLoading(false);
         }
+        setIsLoading(false);
       })();
     }
   }, [isLoading]);
+
   // validate salary
   useEffect(() => {
     if (!salary) setSalaryStatus("ok");
@@ -59,6 +59,7 @@ function App() {
       setSalaryStatus(/^[1-9][0-9]*$/g.test(salary) ? "ok" : "error");
     }
   }, [salary]);
+
   // validate year
   useEffect(() => {
     if (!year) setYearStatus("ok");
