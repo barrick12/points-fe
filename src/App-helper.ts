@@ -1,10 +1,12 @@
-import { getMockTaxData, TTaxDataYear, TTaxBracket } from "./api/marginal-tax";
+import { getTaxData, TTaxDataYear, TTaxBracket } from "./api/marginal-tax";
 import { getTotalTaxPayable } from './utils/get-total-tax'
 import { TTableRowData } from './components/table';
 
 export const fetchTaxData = async (year: TTaxDataYear, salary: number) => {
-    const res = await getMockTaxData(year);
-    return getTableRows(res, salary);
+ 
+  const res = await getTaxData(year);
+    return getTableRows(res ?? [], salary);
+  
 }
 
 export const getTableRows = (brackets: TTaxBracket[], salary: number ) => {

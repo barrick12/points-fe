@@ -13,24 +13,26 @@ export type TTaxBracket = {
   rate: number;
 }
 
-const axiosInstance = axios.create();
-axiosInstance.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  return response;
-}, function (error) {
-  const { config } = error; 
-  config.retry -=1;
-  const delayRetry = new Promise<void>((res,rej)=>{
-    setTimeout(()=> res() ,1000);
-  })
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
-  if(config.retry > 0)
-    return delayRetry.then(()=>axiosInstance(config))
-  return Promise.reject(error);
-});
+const MAX_RETRIES = 10;
+//let retries = 0;
 
-export const getMockTaxData = (year: TTaxDataYear) => {
+export const getTaxData = async (year: TTaxDataYear) => {
+  
   return new Promise<TTaxBracket[]>((res,rej)=> setTimeout(() => res(mockTaxData[year]), 1000));
+  
+  // try {
+  //   const res = await axios.get<TTaxBracket[]>(`http://localhost:5000/tax-calculator/brackets/${year}`)    
+  //   return res.data;
+  // } catch(error) {
+  //   if(retries < MAX_RETRIES) {
+  //     retries++;
+  //     const delayRetry = new Promise<void>((res)=>{
+  //       setTimeout(()=> res() , Math.pow(2, retries) + Math.random() * 1000);
+  //     })
+  //     delayRetry.then(()=>getTaxData(year))      
+  //   }
+  //   else throw error;
+  // }
+
+  // throw new Error('messed up!');
 }

@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState<TTableRowData[]>([]);
   const [effectiveTaxRate, setEffectiveTaxRate] = useState(0);
+  const [isError, setIsError] = useState(false);
 
   // derived values -- could be memoized if they were expensive
   const isYearValid =
@@ -33,17 +34,23 @@ function App() {
 
   useEffect(() => {
     // get data and generate table rows
-    if (isLoading && year && salary)
+    if (isLoading && year && salary) {
+      if (isError) setIsError(false);
       (async () => {
-        const rows = await fetchTaxData(
-          parseInt(year) as TTaxDataYear,
-          parseInt(salary)
-        );
-        setRows(rows);
-        setEffectiveTaxRate(getEffectiveTaxRate(rows, parseInt(salary)));
-        setIsLoading(false);
+        try {
+          const rows = await fetchTaxData(
+            parseInt(year) as TTaxDataYear,
+            parseInt(salary)
+          );
+          setRows(rows);
+          setEffectiveTaxRate(getEffectiveTaxRate(rows, parseInt(salary)));
+        } catch (error) {
+          setIsError(true);
+        } finally {
+          setIsLoading(false);
+        }
       })();
-    //
+    }
   }, [isLoading]);
   // validate salary
   useEffect(() => {
@@ -59,7 +66,7 @@ function App() {
       // debounce checks to be not a nuissance when typing
       const timerId = setTimeout(() => {
         setYearStatus(isYearValid ? "ok" : "error");
-      }, 1000);
+      }, 500);
       return () => clearTimeout(timerId);
     }
   }, [year]);
@@ -113,12 +120,13 @@ function App() {
           </Button>
         </div>
       </div>
-      <Table id="myTable" rows={rows} isLoading={isLoading} />
-      {rows.length > 0 && !isLoading && (
+      {!isError && <Table id="myTable" rows={rows} isLoading={isLoading} />}
+      {!isError && rows.length > 0 && !isLoading && (
         <div className="effectiveTaxRate">
           Effective Tax Rate: {effectiveTaxRate.toFixed(2)}%
         </div>
       )}
+      {isError && <h2>Oops! Something went wrong, try again later.</h2>}
     </div>
   );
 }
