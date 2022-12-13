@@ -32,16 +32,19 @@ export const TextField = (props: ITextField) => {
     testId,
   } = props;
   const testRef = useCreateTestId(testId);
+  const labelRef = useCreateTestId(testId ? `${testId}-label` : "");
   return (
     <div className={classNames("textField", { disabled })}>
-      <label htmlFor={id}>
-        {label}
-        {required && (
-          <span className="required" aria-hidden>
-            *
-          </span>
-        )}
-      </label>
+      {label && (
+        <label htmlFor={id} ref={labelRef}>
+          {label}
+          {required && (
+            <span className="required" aria-hidden>
+              *
+            </span>
+          )}
+        </label>
+      )}
       <input
         id={id}
         type="text"

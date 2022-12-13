@@ -19,9 +19,8 @@ let retries = 0;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const getTaxData = async (year: TTaxDataYear) => {
-  // return new Promise<TTaxBracket[]>((res,rej)=> setTimeout(() => res(mockTaxData[year]), 1000));
   try {
-    const res = await axios({method: 'get', url: `http://localhost:9001/tax-calculator/brackets/${year}`, timeout: 6000})
+    const res = await axios({method: 'get', url: `http://localhost:5000/tax-calculator/brackets/${year}`, timeout: 6000})
     const brackets: TTaxBracket[] = res.data.tax_brackets;
     // the last rate in the 2019 bracket data is a string
     // converting to a float
